@@ -1,6 +1,6 @@
 {
   "name": "entera/final-examination-project",
-  "description": "Final examination project",
+  "description": "Final Examination Project",
   "type": "project",
   "autoload": {
     "psr-4": {
