@@ -1,0 +1,11 @@
+{
+  "name": "entera/final-examination-project",
+  "description": "Final examination project",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "require": {}
+}
