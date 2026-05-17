@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'entera/final-examination-project',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => 'c96ae85360203c9de05f96081433aa06f70f9556',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'entera/final-examination-project' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => 'c96ae85360203c9de05f96081433aa06f70f9556',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

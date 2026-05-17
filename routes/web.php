@@ -5,13 +5,11 @@ declare(strict_types=1);
 use App\Controllers\AuthController;
 use App\Controllers\DashboardController;
 use App\Controllers\StudentController;
-use Core\Http\Router;
-
-$router = new Router();
 
 $router->get('/', [DashboardController::class, 'index']);
 $router->get('/dashboard', [DashboardController::class, 'index']);
-$router->get('/login', [AuthController::class, 'showLogin']);
+
+$router->get('/login', [AuthController::class, 'show']);
 $router->post('/login', [AuthController::class, 'login']);
 $router->post('/logout', [AuthController::class, 'logout']);
 
@@ -23,5 +21,3 @@ $router->get('/students/{id}', [StudentController::class, 'show']);
 $router->get('/students/{id}/edit', [StudentController::class, 'edit']);
 $router->post('/students/{id}/update', [StudentController::class, 'update']);
 $router->post('/students/{id}/delete', [StudentController::class, 'destroy']);
-
-return $router;
