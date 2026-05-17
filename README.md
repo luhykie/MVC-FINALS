@@ -1,6 +1,6 @@
 # Student Records MVC
 
-Plain PHP MVC final examination project using Composer autoloading and PDO.
+Plain PHP MVC final examination project using Composer autoloading and a small custom Active Record ORM layer built on PDO.
 
 ## Features
 
@@ -11,6 +11,7 @@ Plain PHP MVC final examination project using Composer autoloading and PDO.
 - Search and pagination
 - Server-side validation and CSRF protection
 - SQLite setup by default, with MySQL schema included
+- Custom ORM base model for table mapping, finding, counting, inserting, updating, deleting, pagination, and search
 
 ## Default Login
 
@@ -25,10 +26,11 @@ Plain PHP MVC final examination project using Composer autoloading and PDO.
    composer install
    ```
 
-2. Create and seed the SQLite database:
+2. Create the database tables and seed data using the SQL files:
 
    ```bash
-   php scripts/setup.php
+   database/schema.sql
+   database/seed.sql
    ```
 
 3. Start the local PHP server:
@@ -45,13 +47,38 @@ Plain PHP MVC final examination project using Composer autoloading and PDO.
 
 ## MySQL Option
 
-If your instructor requires MySQL, create a database named `mvc_finals`, import `database/mysql_schema.sql`, insert seed data using the same values from `database/seed.sql`, then update `config/config.php`:
+If your instructor requires MySQL, create a database named `mvc_finals`, import `database/mysql_schema.sql`, insert seed data using the same values from `database/seed.sql`, then update `config/database.php`:
 
 ```php
 'driver' => 'mysql',
 ```
 
 Set the MySQL host, username, and password in the same config file.
+
+## Project Structure
+
+```text
+app/
+  Controllers/
+  Models/
+  Views/
+config/
+  app.php
+  database.php
+core/
+  Container/
+  Database/
+  Http/
+  Middleware/
+  View/
+database/
+public/
+  index.php
+routes/
+  web.php
+composer.json
+README.md
+```
 
 ## Routes
 
@@ -73,13 +100,15 @@ Set the MySQL host, username, and password in the same config file.
 
 ## MVC And SOLID Notes
 
-- `public/index.php` is the front controller. It registers routes and delegates requests to controllers.
-- `App\Core\Router` owns route matching, including `{id}` parameter support.
+- `public/index.php` is the front controller. It starts the session, loads routes, and dispatches the request.
+- `routes/web.php` registers all web routes.
+- `Core\Http\Router` owns route matching, including `{id}` parameter support.
 - `App\Controllers\StudentController`, `DashboardController`, and `AuthController` handle request flow only.
-- `App\Models\Student` and `User` contain database operations through PDO.
-- `App\Core\View` renders templates from `views/`, keeping HTML out of controllers.
+- `Core\Database\Model` is the custom ORM base class. It maps model classes to database tables and provides reusable find, count, insert, update, delete, search, and pagination methods.
+- `App\Models\Student`, `DeletedStudent`, and `User` extend the ORM base model instead of writing SQL inside controllers.
+- `Core\View\Engine` renders templates from `app/Views/`, keeping HTML out of controllers.
 - Single Responsibility: routing, sessions, authentication, validation, database connection, rendering, controllers, and models are separated into focused classes.
 - Open/Closed: new pages can be added by registering new routes and controller actions without changing router internals.
-- Liskov Substitution: controllers share common behavior through `App\Core\Controller` and can be used consistently by the router.
+- Liskov Substitution: controllers share common behavior through `Core\Controller` and can be used consistently by the router.
 - Interface Segregation: each core helper exposes a small purpose-specific API instead of one large utility class.
-- Dependency Inversion: controllers depend on model/core abstractions and PDO access is centralized in `App\Core\Database`.
+- Dependency Inversion: controllers depend on model/core abstractions; PDO access is centralized in `Core\Database\Connection`, while table operations go through `Core\Database\Model`.
