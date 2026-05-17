@@ -1,0 +1,39 @@
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(120) NOT NULL,
+    email VARCHAR(160) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS students (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_number VARCHAR(50) NOT NULL UNIQUE,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    course VARCHAR(100) NOT NULL,
+    year_level INTEGER NOT NULL,
+    email VARCHAR(160) NOT NULL UNIQUE,
+    phone VARCHAR(40),
+    address TEXT,
+    status VARCHAR(20) NOT NULL DEFAULT 'Active',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS deleted_students (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    original_student_id INTEGER NOT NULL,
+    student_number VARCHAR(50) NOT NULL,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    course VARCHAR(100) NOT NULL,
+    year_level INTEGER NOT NULL,
+    email VARCHAR(160) NOT NULL,
+    phone VARCHAR(40),
+    address TEXT,
+    status VARCHAR(20) NOT NULL,
+    created_at DATETIME,
+    updated_at DATETIME,
+    deleted_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
