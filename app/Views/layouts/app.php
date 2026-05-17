@@ -18,8 +18,8 @@ $error = Session::flash('error');
 <body>
     <header>
         <nav>
-            <a href="/"><?= View::e($appConfig['name']) ?></a>
-            <br>
+            <!-- <a href="/"><?= View::e($appConfig['name']) ?></a>
+            <br> -->
             <a href="/dashboard">Dashboard</a>
             <a href="/students">Students</a>
             <a href="/students/history">History</a>
@@ -48,7 +48,6 @@ $error = Session::flash('error');
 
         <?= $content ?>
 
-        <footer>PHP MVC Final Examination Project</footer>
     </main>
 </body>
 </html>

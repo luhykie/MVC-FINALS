@@ -5,7 +5,7 @@ use Core\View\Engine as View;
 <h1>Dashboard</h1>
 <p>Overview of student records and deleted records.</p>
 
-<p><a href="/students/create">Add Student</a></p>
+<!-- <p><a href="/students/create">Add Student</a></p> -->
 
 <section>
     <p><?= (int) $stats['total'] ?><br>Total Students</p>
@@ -15,7 +15,7 @@ use Core\View\Engine as View;
 </section>
 
 <section>
-    <h2>Recent Students</h2>
+    <h2>List of Students</h2>
     <p><a href="/students">View All</a></p>
 
     <?php if (!$recentStudents): ?>
@@ -46,7 +46,7 @@ use Core\View\Engine as View;
 
 <section>
     <h2>Deleted History</h2>
-    <p><a href="/students/history">View History</a></p>
+    <!-- <p><a href="/students/history">View History</a></p> -->
 
     <?php if (!$recentDeleted): ?>
         <p>No deleted student records.</p>
