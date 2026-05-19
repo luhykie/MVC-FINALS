@@ -8,6 +8,7 @@ class QueryBuilder
 {
     public static function table(string $table): Model
     {
+        // This project uses model classes as the ORM layer instead of a generic query builder.
         throw new \LogicException('Use model classes for ORM queries in this project.');
     }
 }

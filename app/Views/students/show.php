@@ -5,6 +5,7 @@ use Core\View\Engine as View;
 ?>
 <div>
     <div>
+        <!-- Student data is loaded by StudentController::show(). -->
         <h1><?= View::e($student['first_name'] . ' ' . $student['last_name']) ?></h1>
         <p><?= View::e($student['student_number']) ?></p>
     </div>
@@ -42,6 +43,7 @@ use Core\View\Engine as View;
         </div>
     </div>
 
+    <!-- Delete form moves the student into deleted history before removing it. -->
     <form method="post" action="/students/<?= (int) $student['id'] ?>/delete" onsubmit="return confirm('Delete this student?');">
         <input type="hidden" name="_csrf" value="<?= View::e(Session::csrfToken()) ?>">
         <button type="submit">Delete Student</button>

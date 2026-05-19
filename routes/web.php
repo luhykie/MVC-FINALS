@@ -6,13 +6,16 @@ use App\Controllers\AuthController;
 use App\Controllers\DashboardController;
 use App\Controllers\StudentController;
 
+// Dashboard routes. "/" and "/dashboard" show the same page.
 $router->get('/', [DashboardController::class, 'index']);
 $router->get('/dashboard', [DashboardController::class, 'index']);
 
+// Authentication routes for login and logout.
 $router->get('/login', [AuthController::class, 'showLogin']);
 $router->post('/login', [AuthController::class, 'login']);
 $router->post('/logout', [AuthController::class, 'logout']);
 
+// Student CRUD routes: list, create, read, update, delete, and deleted history.
 $router->get('/students', [StudentController::class, 'index']);
 $router->get('/students/history', [StudentController::class, 'history']);
 $router->get('/students/create', [StudentController::class, 'create']);

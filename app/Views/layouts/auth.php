@@ -3,7 +3,10 @@
 use Core\Session;
 use Core\View\Engine as View;
 
+// Auth layout is used by login-related pages.
 $appConfig = require dirname(__DIR__, 3) . '/config/app.php';
+
+// Flash messages show login/logout errors or success notices once.
 $success = Session::flash('success');
 $error = Session::flash('error');
 ?>
@@ -19,6 +22,7 @@ $error = Session::flash('error');
         <section>
             <h1><?= View::e($appConfig['name']) ?></h1>
 
+            <!-- One-time messages from AuthController. -->
             <?php if ($success): ?>
                 <div><?= View::e($success) ?></div>
             <?php endif; ?>
@@ -27,6 +31,7 @@ $error = Session::flash('error');
                 <div><?= View::e($error) ?></div>
             <?php endif; ?>
 
+            <!-- Login form content is inserted here. -->
             <?= $content ?>
         </section>
     </main>

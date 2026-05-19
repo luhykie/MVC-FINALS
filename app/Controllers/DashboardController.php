@@ -11,8 +11,10 @@ class DashboardController extends Controller
 {
     public function index(): string
     {
+        // Dashboard is protected, so guests are redirected to login.
         $this->requireAuth();
 
+        // Student model provides counts and recent records for the dashboard.
         $students = new Student();
 
         return $this->render('dashboard/index', [

@@ -3,6 +3,7 @@
 use Core\Session;
 use Core\View\Engine as View;
 
+// StudentController passes paginated search results in $result.
 $items = $result['items'];
 $page = $result['page'];
 $pages = $result['pages'];
@@ -15,6 +16,7 @@ $pages = $result['pages'];
 </div>
 
 <section>
+    <!-- Search submits as GET so the search text appears in the URL. -->
     <form method="get" action="/students">
         <label for="search">Search</label>
         <input id="search" name="search" value="<?= View::e($search) ?>" placeholder="Name, student no., course, or email">
@@ -24,6 +26,7 @@ $pages = $result['pages'];
         <?php endif; ?>
     </form>
 
+    <!-- If the model returned no rows, show a message instead of an empty table. -->
     <?php if (!$items): ?>
         <p>No students matched your search.</p>
     <?php else: ?>
@@ -40,6 +43,7 @@ $pages = $result['pages'];
                 </tr>
             </thead>
             <tbody>
+                <!-- Each row comes from the students table through Student::paginate(). -->
                 <?php foreach ($items as $student): ?>
                     <tr>
                         <td><?= View::e($student['student_number']) ?></td>
@@ -51,6 +55,7 @@ $pages = $result['pages'];
                         <td>
                             <a href="/students/<?= (int) $student['id'] ?>">View</a>
                             <a href="/students/<?= (int) $student['id'] ?>/edit">Edit</a>
+                            <!-- Delete uses POST, CSRF, and a browser confirmation. -->
                             <form method="post" action="/students/<?= (int) $student['id'] ?>/delete" onsubmit="return confirm('Delete this student?');">
                                 <input type="hidden" name="_csrf" value="<?= View::e(Session::csrfToken()) ?>">
                                 <button type="submit">Delete</button>
@@ -61,6 +66,7 @@ $pages = $result['pages'];
             </tbody>
         </table>
 
+        <!-- Pagination links keep the current search value. -->
         <div>
             <?php if ($page > 1): ?>
                 <a href="/students?page=<?= $page - 1 ?>&search=<?= urlencode($search) ?>">Previous</a>

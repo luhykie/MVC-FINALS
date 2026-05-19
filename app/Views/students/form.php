@@ -3,12 +3,14 @@
 use Core\Session;
 use Core\View\Engine as View;
 
+// Defaults let the same form work for both create and edit pages.
 $title = $title ?? 'Student Form';
 $student = $student ?? [];
 $errors = $errors ?? [];
 $action = $action ?? '/students';
 $mode = $mode ?? 'create';
 
+// Helpers keep the form fields and error display shorter below.
 $value = fn (string $key): string => (string) ($student[$key] ?? '');
 $fieldError = fn (string $key): string => isset($errors[$key]) ? '<div>' . View::e($errors[$key]) . '</div>' : '';
 ?>
@@ -22,6 +24,7 @@ $fieldError = fn (string $key): string => isset($errors[$key]) ? '<div>' . View:
 
 <section>
     <form method="post" action="<?= View::e($action) ?>">
+        <!-- CSRF token is checked by the controller before saving. -->
         <input type="hidden" name="_csrf" value="<?= View::e(Session::csrfToken()) ?>">
 
         <div>
@@ -52,6 +55,7 @@ $fieldError = fn (string $key): string => isset($errors[$key]) ? '<div>' . View:
             <div>
                 <label for="year_level">Year Level</label>
                 <select id="year_level" name="year_level" required>
+                    <!-- Build year choices 1 to 5 and select the current value when editing. -->
                     <?php for ($year = 1; $year <= 5; $year++): ?>
                         <option value="<?= $year ?>" <?= (int) $value('year_level') === $year ? 'selected' : '' ?>><?= $year ?></option>
                     <?php endfor; ?>
@@ -62,6 +66,7 @@ $fieldError = fn (string $key): string => isset($errors[$key]) ? '<div>' . View:
             <div>
                 <label for="status">Status</label>
                 <select id="status" name="status" required>
+                    <!-- These statuses must match the allowed values in Validator::student(). -->
                     <?php foreach (['Active', 'Inactive', 'Graduated'] as $status): ?>
                         <option value="<?= $status ?>" <?= $value('status') === $status ? 'selected' : '' ?>><?= $status ?></option>
                     <?php endforeach; ?>

@@ -8,23 +8,28 @@ class Validator
 {
     public static function student(array $data): array
     {
+        // Collect validation messages by field name.
         $errors = [];
 
+        // These fields must not be empty.
         foreach (['student_number', 'first_name', 'last_name', 'course', 'year_level', 'email', 'status'] as $field) {
             if (trim((string) ($data[$field] ?? '')) === '') {
                 $errors[$field] = 'This field is required.';
             }
         }
 
+        // Validate email format when an email was submitted.
         if (!empty($data['email']) && !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = 'Enter a valid email address.';
         }
 
+        // The form only allows year levels 1 to 5.
         $year = (int) ($data['year_level'] ?? 0);
         if ($year < 1 || $year > 5) {
             $errors['year_level'] = 'Year level must be between 1 and 5.';
         }
 
+        // Status must match one of the allowed options.
         if (!in_array($data['status'] ?? '', ['Active', 'Inactive', 'Graduated'], true)) {
             $errors['status'] = 'Choose a valid status.';
         }

@@ -11,6 +11,7 @@ class AuthMiddleware
 {
     public function handle(): void
     {
+        // Middleware version of requireAuth: block guests before protected code runs.
         if (!Auth::check()) {
             Session::flash('error', 'Please log in to continue.');
             header('Location: /login');
