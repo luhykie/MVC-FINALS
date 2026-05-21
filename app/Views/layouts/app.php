@@ -2,6 +2,7 @@
 
 use Core\Auth;
 use Core\Session;
+use Core\View\Alert;
 use Core\View\Engine as View;
 
 // Layout data nga gamiton sa every logged-in page.
@@ -45,13 +46,8 @@ $error = Session::flash('error');
 
     <main>
         <!-- One-time success ug error messages from controllers. -->
-        <?php if ($success): ?>
-            <div><?= View::e($success) ?></div>
-        <?php endif; ?>
-
-        <?php if ($error): ?>
-            <div><?= View::e($error) ?></div>
-        <?php endif; ?>
+        <?= Alert::render($success, 'success') ?>
+        <?= Alert::render($error, 'error') ?>
 
         <!-- Diri i-insert sa view engine ang page-specific view content. -->
         <?= $content ?>

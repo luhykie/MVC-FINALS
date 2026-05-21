@@ -43,9 +43,5 @@ use Core\View\Engine as View;
         </div>
     </div>
 
-    <!-- Delete form mo-move sa student into deleted history before tangtangon. -->
-    <form method="post" action="/students/<?= (int) $student['id'] ?>/delete" onsubmit="return confirm('Delete this student?');">
-        <input type="hidden" name="_csrf" value="<?= View::e(Session::csrfToken()) ?>">
-        <button type="submit">Delete Student</button>
-    </form>
+    <a href="/students/<?= (int) $student['id'] ?>/delete">Delete Student</a>
 </section>

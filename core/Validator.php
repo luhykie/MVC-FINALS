@@ -6,15 +6,50 @@ namespace Core;
 
 class Validator
 {
+    public static function login(array $data): array
+    {
+        // Tigumon ang login validation messages.
+        $errors = [];
+
+        $emailIsEmpty = trim((string) ($data['email'] ?? '')) === '';
+        $passwordIsEmpty = (string) ($data['password'] ?? '') === '';
+
+        // Email ug password dili dapat empty.
+        if ($emailIsEmpty && $passwordIsEmpty) {
+            $errors[] = 'fields are empty';
+        } elseif ($emailIsEmpty) {
+            $errors[] = 'email is required';
+        } elseif ($passwordIsEmpty) {
+            $errors[] = 'password is required';
+        }
+
+        // I-check ang email format kung naay gi-type nga email.
+        if (!$errors && !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            $errors[] = 'Enter a valid email address.';
+        }
+
+        return $errors;
+    }
+
     public static function student(array $data): array
     {
         // Tigumon ang validation messages by field name.
         $errors = [];
 
         // Kini nga fields dili dapat empty.
-        foreach (['student_number', 'first_name', 'last_name', 'course', 'year_level', 'email', 'status'] as $field) {
+        $requiredFields = [
+            'student_number' => 'fields are empty',
+            'first_name' => 'fields are empty',
+            'last_name' => 'fields are empty',
+            'course' => 'fields are empty',
+            'year_level' => 'fields are empty',
+            'email' => 'fields are empty',
+            'status' => 'fields are empty',
+        ];
+
+        foreach ($requiredFields as $field => $message) {
             if (trim((string) ($data[$field] ?? '')) === '') {
-                $errors[$field] = 'This field is required.';
+                $errors[$field] = $message;
             }
         }
 

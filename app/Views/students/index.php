@@ -1,6 +1,5 @@
 <?php
 
-use Core\Session;
 use Core\View\Engine as View;
 
 // StudentController mo-pass sa paginated search results sa $result.
@@ -55,11 +54,7 @@ $pages = $result['pages'];
                         <td>
                             <a href="/students/<?= (int) $student['id'] ?>">View</a>
                             <a href="/students/<?= (int) $student['id'] ?>/edit">Edit</a>
-                            <!-- Delete gamit ug POST, CSRF, ug browser confirmation. -->
-                            <form method="post" action="/students/<?= (int) $student['id'] ?>/delete" onsubmit="return confirm('Delete this student?');">
-                                <input type="hidden" name="_csrf" value="<?= View::e(Session::csrfToken()) ?>">
-                                <button type="submit">Delete</button>
-                            </form>
+                            <a href="/students/<?= (int) $student['id'] ?>/delete">Delete</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

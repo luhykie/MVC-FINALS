@@ -7,6 +7,7 @@ namespace App\Controllers;
 use Core\Auth;
 use Core\Controller;
 use Core\Session;
+use Core\Validator;
 
 class AuthController extends Controller
 {
@@ -29,6 +30,14 @@ class AuthController extends Controller
         // Basahon ang submitted credentials gikan sa login form.
         $email = trim((string) ($_POST['email'] ?? ''));
         $password = (string) ($_POST['password'] ?? '');
+
+        // Ipaagi sa PHP validator, then show as notification alert.
+        $errors = Validator::login($_POST);
+        if ($errors) {
+            Session::flash('error', $errors[0]);
+            Session::flash('old_email', $email);
+            $this->redirect('/login');
+        }
 
         // Auth::attempt mo-check sa database ug mo-store sa user sa session kung success.
         if (Auth::attempt($email, $password)) {

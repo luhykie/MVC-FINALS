@@ -1,6 +1,7 @@
 <?php
 
 use Core\Session;
+use Core\View\Alert;
 use Core\View\Engine as View;
 
 // Auth layout gamiton sa login-related pages.
@@ -22,14 +23,8 @@ $error = Session::flash('error');
         <section>
             <h1><?= View::e($appConfig['name']) ?></h1>
 
-            <!-- One-time messages from AuthController. -->
-            <?php if ($success): ?>
-                <div><?= View::e($success) ?></div>
-            <?php endif; ?>
-
-            <?php if ($error): ?>
-                <div><?= View::e($error) ?></div>
-            <?php endif; ?>
+            <?= Alert::render($success, 'success') ?>
+            <?= Alert::render($error, 'error') ?>
 
             <!-- Diri i-insert ang login form content. -->
             <?= $content ?>

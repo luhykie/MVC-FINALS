@@ -22,5 +22,6 @@ $router->get('/students/create', [StudentController::class, 'create']);
 $router->post('/students', [StudentController::class, 'store']);
 $router->get('/students/{id}', [StudentController::class, 'show']);
 $router->get('/students/{id}/edit', [StudentController::class, 'edit']);
+$router->get('/students/{id}/delete', [StudentController::class, 'confirmDelete']);
 $router->post('/students/{id}/update', [StudentController::class, 'update']);
 $router->post('/students/{id}/delete', [StudentController::class, 'destroy']);

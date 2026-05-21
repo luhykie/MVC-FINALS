@@ -71,11 +71,11 @@ class StudentController extends Controller
         $errors = Validator::student($_POST);
 
         if ($errors) {
-            // Ibalik ang user sa form with input ug validation errors.
+            // Ibalik ang user sa form with notification alert.
+            Session::flash('error', reset($errors));
             return $this->render('students/form', [
                 'title' => 'Add Student',
                 'student' => $_POST,
-                'errors' => $errors,
                 'action' => '/students',
                 'mode' => 'create',
             ]);
@@ -88,10 +88,10 @@ class StudentController extends Controller
             $this->redirect('/students/' . $id);
         } catch (PDOException $exception) {
             // Duplicate student number or email usually ang cause sa database error.
+            Session::flash('error', 'Student number or email may already exist.');
             return $this->render('students/form', [
                 'title' => 'Add Student',
                 'student' => $_POST,
-                'errors' => ['student_number' => 'Student number or email may already exist.'],
                 'action' => '/students',
                 'mode' => 'create',
             ]);
@@ -139,6 +139,24 @@ class StudentController extends Controller
         ]);
     }
 
+    public function confirmDelete(string $id): string
+    {
+        $this->requireAuth();
+        $student = $this->students->find((int) $id);
+
+        if (!$student) {
+            // Kung wala ang student id, ipakita ang 404 page.
+            http_response_code(404);
+            return $this->render('errors/404', ['title' => 'Student not found']);
+        }
+
+        // PHP confirmation page ni before final delete.
+        return $this->render('students/delete', [
+            'title' => 'Delete Student',
+            'student' => $student,
+        ]);
+    }
+
     public function update(string $id): string
     {
         $this->requireAuth();
@@ -155,11 +173,11 @@ class StudentController extends Controller
         $errors = Validator::student($_POST);
 
         if ($errors) {
-            // I-merge ang old data ug submitted data para dili mawala ang gi-type sa user.
+            // I-merge ang old data ug submitted data, then show notification alert.
+            Session::flash('error', reset($errors));
             return $this->render('students/form', [
                 'title' => 'Edit Student',
                 'student' => array_merge($student, $_POST),
-                'errors' => $errors,
                 'action' => '/students/' . $id . '/update',
                 'mode' => 'edit',
             ]);
@@ -172,10 +190,10 @@ class StudentController extends Controller
             $this->redirect('/students/' . $id);
         } catch (PDOException $exception) {
             // I-handle ang duplicate student number or email while open gihapon ang edit form.
+            Session::flash('error', 'Student number or email may already exist.');
             return $this->render('students/form', [
                 'title' => 'Edit Student',
                 'student' => array_merge($student, $_POST),
-                'errors' => ['student_number' => 'Student number or email may already exist.'],
                 'action' => '/students/' . $id . '/update',
                 'mode' => 'edit',
             ]);
