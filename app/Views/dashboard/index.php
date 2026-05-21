@@ -47,33 +47,3 @@ use Core\View\Engine as View;
     <?php endif; ?>
 </section>
 
-<section>
-    <h2>Deleted History</h2>
-    <!-- <p><a href="/students/history">View History</a></p> -->
-
-    <!-- recentDeleted gikan sa deleted_students table. -->
-    <?php if (!$recentDeleted): ?>
-        <p>No deleted student records.</p>
-    <?php else: ?>
-        <table>
-            <thead>
-                <tr>
-                    <th>Student No.</th>
-                    <th>Name</th>
-                    <th>Course</th>
-                    <th>Deleted At</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($recentDeleted as $student): ?>
-                    <tr>
-                        <td><?= View::e($student['student_number']) ?></td>
-                        <td><?= View::e($student['first_name'] . ' ' . $student['last_name']) ?></td>
-                        <td><?= View::e($student['course']) ?></td>
-                        <td><?= View::e($student['deleted_at']) ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    <?php endif; ?>
-</section>

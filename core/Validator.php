@@ -19,13 +19,10 @@ class Validator
             $errors[] = 'fields are empty';
         } elseif ($emailIsEmpty) {
             $errors[] = 'email is required';
+        } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            $errors[] = 'invalid email format';
         } elseif ($passwordIsEmpty) {
             $errors[] = 'password is required';
-        }
-
-        // I-check ang email format kung naay gi-type nga email.
-        if (!$errors && !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-            $errors[] = 'Enter a valid email address.';
         }
 
         return $errors;
