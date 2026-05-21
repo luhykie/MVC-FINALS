@@ -1,14 +1,14 @@
 <?php
 
 return [
-    // Change this to "mysql" if you want the app to use the MySQL settings below.
+    // Ilisi ni ug "mysql" kung gusto nimo gamiton ang MySQL settings below.
     'driver' => 'sqlite',
 
-    // SQLite stores the whole database in one file. Connection.php creates the
-    // folder automatically if it does not exist yet.
+    // SQLite mo-store sa whole database sa usa ka file. Connection.php mo-create
+    // sa folder automatically kung wala pa nag-exist.
     'sqlite_path' => dirname(__DIR__) . '/database/app.sqlite',
 
-    // These values are only used when the driver above is set to "mysql".
+    // Kini nga values gamiton ra kung ang driver above kay "mysql".
     'mysql' => [
         'host' => '127.0.0.1',
         'port' => '3306',

@@ -14,13 +14,13 @@ final class Application
 
     public function run(): void
     {
-        // Read the HTTP method, such as GET or POST.
+        // Basahon ang HTTP method, like GET or POST.
         $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
-        // Read only the path part of the URL, without query strings.
+        // Basahon ra ang path part sa URL, walay query strings.
         $uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
 
-        // Send the request to the router so it can call the matching controller.
+        // Ipadala ang request sa router para matawag ang matching controller.
         $this->router->dispatch($method, $uri);
     }
 }

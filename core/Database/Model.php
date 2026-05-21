@@ -8,52 +8,52 @@ use PDO;
 
 abstract class Model
 {
-    // Child models set this to the table they represent, for example "students".
+    // Child models mo-set ani sa table nga ilang gi-represent, example "students".
     protected string $table;
 
-    // Most tables use "id" as the primary key, but a child model can override it.
+    // Most tables gamit ug "id" as primary key, pero pwede i-override sa child model.
     protected string $primaryKey = 'id';
 
-    // Stores one row of database data inside the model object.
+    // Mo-store ug usa ka row sa database data sulod sa model object.
     protected array $attributes = [];
 
     public function __construct(array $attributes = [])
     {
-        // When a row is fetched from the database, it is saved here as model data.
+        // Kung na-fetch ang row from database, diri siya i-save as model data.
         $this->attributes = $attributes;
     }
 
     public function __get(string $key): mixed
     {
-        // Allows $student->first_name to read from the attributes array.
+        // Mo-allow sa $student->first_name nga mobasa from attributes array.
         return $this->attributes[$key] ?? null;
     }
 
     public function __set(string $key, mixed $value): void
     {
-        // Allows $student->first_name = 'Juan' to update the attributes array.
+        // Mo-allow sa $student->first_name = 'Juan' nga mo-update sa attributes array.
         $this->attributes[$key] = $value;
     }
 
     public function toArray(): array
     {
-        // Controllers and views mostly use arrays, so models can be converted back.
+        // Controllers ug views mostly gamit ug arrays, so models pwede i-convert balik.
         return $this->attributes;
     }
 
     protected static function findRecord(int $id): ?static
     {
-        // "new static()" creates the child model that called this method, such as Student.
+        // "new static()" mo-create sa child model nga ni-call ani, like Student.
         $model = new static();
 
-        // Prepared statements keep values separate from SQL and help prevent SQL injection.
+        // Prepared statements mo-separate sa values from SQL ug help prevent SQL injection.
         $statement = self::connection()->prepare(
             'SELECT * FROM ' . self::identifier($model->table) . ' WHERE ' . self::identifier($model->primaryKey) . ' = :id LIMIT 1'
         );
         $statement->execute(['id' => $id]);
         $row = $statement->fetch();
 
-        // Hydrate the row into a model object, or return null when no row exists.
+        // I-hydrate ang row into model object, or null kung walay row.
         return $row ? new static($row) : null;
     }
 
@@ -61,7 +61,7 @@ abstract class Model
     {
         $model = new static();
 
-        // Used for lookups like finding one user by email.
+        // Gamiton for lookups like pagpangita ug user by email.
         $statement = self::connection()->prepare(
             'SELECT * FROM ' . self::identifier($model->table) . ' WHERE ' . self::identifier($field) . ' = :value LIMIT 1'
         );
@@ -75,7 +75,7 @@ abstract class Model
     {
         $model = new static();
 
-        // LIMIT is bound as an integer because some database drivers reject it as a string.
+        // LIMIT gi-bind as integer kay some database drivers dili modawat kung string.
         $statement = self::connection()->prepare(
             'SELECT * FROM ' . self::identifier($model->table) . ' ORDER BY ' . self::identifier($orderBy) . ' DESC LIMIT :limit'
         );
@@ -89,7 +89,7 @@ abstract class Model
     {
         $model = new static();
 
-        // Only allow ASC or DESC so raw user text cannot become part of the SQL direction.
+        // ASC or DESC ra ang allowed para raw user text dili maapil sa SQL direction.
         $direction = strtoupper($direction) === 'DESC' ? 'DESC' : 'ASC';
         $statement = self::connection()->query(
             'SELECT * FROM ' . self::identifier($model->table) . ' ORDER BY ' . self::identifier($orderBy) . ' ' . $direction
@@ -102,7 +102,7 @@ abstract class Model
     {
         $model = new static();
 
-        // Build an optional WHERE clause, for example status = "Active".
+        // Mag-build ug optional WHERE clause, example status = "Active".
         [$where, $params] = self::whereEquals($conditions);
         $statement = self::connection()->prepare('SELECT COUNT(*) FROM ' . self::identifier($model->table) . $where);
         $statement->execute($params);
@@ -114,20 +114,20 @@ abstract class Model
     {
         $model = new static();
 
-        // Keep the page number valid, then calculate how many rows to skip.
+        // I-keep valid ang page number, then calculate pila ka rows i-skip.
         $page = max(1, $page);
         $offset = ($page - 1) * $perPage;
 
-        // Build a LIKE search across multiple fields, such as name, course, and email.
+        // Mag-build ug LIKE search sa multiple fields, like name, course, ug email.
         [$where, $params] = self::whereLike($fields, $search);
         $table = self::identifier($model->table);
 
-        // First query counts all matching rows so the view can show total pages.
+        // First query mo-count sa matching rows para ma-show sa view ang total pages.
         $count = self::connection()->prepare("SELECT COUNT(*) FROM {$table}{$where}");
         $count->execute($params);
         $total = (int) $count->fetchColumn();
 
-        // Second query fetches only the rows for the current page.
+        // Second query mo-fetch ra sa rows para sa current page.
         $statement = self::connection()->prepare(
             "SELECT * FROM {$table}{$where} ORDER BY " . self::identifier($orderBy) . ' DESC LIMIT :limit OFFSET :offset'
         );
@@ -152,7 +152,7 @@ abstract class Model
         $model = new static();
         $columns = array_keys($attributes);
 
-        // Convert array keys into column names and named placeholders.
+        // I-convert ang array keys into column names ug named placeholders.
         $columnSql = implode(', ', array_map(self::identifier(...), $columns));
         $placeholderSql = implode(', ', array_map(fn (string $column): string => ':' . $column, $columns));
         $statement = self::connection()->prepare(
@@ -160,7 +160,7 @@ abstract class Model
         );
         $statement->execute($attributes);
 
-        // Return the new row id so the controller can redirect to the created record.
+        // I-return ang new row id para maka-redirect ang controller sa created record.
         return (int) self::connection()->lastInsertId();
     }
 
@@ -172,7 +172,7 @@ abstract class Model
             array_keys($attributes)
         ));
 
-        // Add the id to the same parameter array used by the prepared statement.
+        // I-add ang id sa same parameter array nga gamit sa prepared statement.
         $attributes['id'] = $id;
         $statement = self::connection()->prepare(
             'UPDATE ' . self::identifier($model->table) . " SET {$setSql} WHERE " . self::identifier($model->primaryKey) . ' = :id'
@@ -184,7 +184,7 @@ abstract class Model
     {
         $model = new static();
 
-        // Delete one row by primary key.
+        // I-delete ang usa ka row by primary key.
         $statement = self::connection()->prepare(
             'DELETE FROM ' . self::identifier($model->table) . ' WHERE ' . self::identifier($model->primaryKey) . ' = :id'
         );
@@ -193,25 +193,25 @@ abstract class Model
 
     protected static function connection(): PDO
     {
-        // All ORM queries go through the shared PDO connection.
+        // Tanan ORM queries moagi sa shared PDO connection.
         return Connection::connection();
     }
 
     private static function hydrateMany(array $rows): array
     {
-        // Turn many database rows into many model objects.
+        // Himuon ang many database rows into many model objects.
         return array_map(fn (array $row): static => new static($row), $rows);
     }
 
     private static function modelsToArrays(array $models): array
     {
-        // Turn model objects into plain arrays for controllers/views.
+        // Himuon ang model objects into plain arrays para sa controllers/views.
         return array_map(fn (self $model): array => $model->toArray(), $models);
     }
 
     private static function whereEquals(array $conditions): array
     {
-        // No conditions means the SQL does not need a WHERE clause.
+        // Kung walay conditions, dili need ang WHERE clause sa SQL.
         if (!$conditions) {
             return ['', []];
         }
@@ -225,13 +225,13 @@ abstract class Model
             $params[$key] = $value;
         }
 
-        // Return both the SQL fragment and the values that should be bound to it.
+        // I-return ang SQL fragment ug values nga i-bind.
         return [' WHERE ' . implode(' AND ', $parts), $params];
     }
 
     private static function whereLike(array $fields, string $search): array
     {
-        // Empty search means show all rows.
+        // Empty search means ipakita tanan rows.
         if ($search === '') {
             return ['', []];
         }
@@ -250,7 +250,7 @@ abstract class Model
 
     private static function identifier(string $identifier): string
     {
-        // Table and column names cannot be bound like values, so validate them strictly.
+        // Table ug column names dili ma-bind like values, so i-validate sila strictly.
         if (!preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/', $identifier)) {
             throw new \InvalidArgumentException('Invalid database identifier.');
         }

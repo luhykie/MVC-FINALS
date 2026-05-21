@@ -10,15 +10,15 @@ class Auth
 {
     public static function attempt(string $email, string $password): bool
     {
-        // Look for a user row with the submitted email.
+        // Pangitaon ang user row gamit ang submitted email.
         $user = (new User())->findByEmail($email);
 
-        // password_verify compares the plain password with the hashed password in the database.
+        // password_verify mo-compare sa plain password ug hashed password sa database.
         if (!$user || !password_verify($password, $user['password'])) {
             return false;
         }
 
-        // Store only safe user details in the session, never the password hash.
+        // I-store ra ang safe user details sa session, dili ang password hash.
         Session::set('user', [
             'id' => $user['id'],
             'name' => $user['name'],
@@ -30,19 +30,19 @@ class Auth
 
     public static function check(): bool
     {
-        // A user is logged in when their user data exists in the session.
+        // Logged in ang user kung naa iyang user data sa session.
         return Session::get('user') !== null;
     }
 
     public static function user(): ?array
     {
-        // Returns the logged-in user's session data, or null if not logged in.
+        // Mo-return sa logged-in user's session data, or null kung not logged in.
         return Session::get('user');
     }
 
     public static function logout(): void
     {
-        // Removing the user session logs the user out.
+        // Pag-remove sa user session kay mo-logout sa user.
         Session::remove('user');
     }
 }

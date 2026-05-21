@@ -4,11 +4,11 @@ use Core\Session;
 use Core\View\Engine as View;
 ?>
 <form method="post" action="/login">
-    <!-- CSRF token protects this POST form. -->
+    <!-- CSRF token mo-protect ani nga POST form. -->
     <input type="hidden" name="_csrf" value="<?= View::e(Session::csrfToken()) ?>">
 
     <div>
-        <!-- Default demo credentials are prefilled for easier testing. -->
+        <!-- Default demo credentials daan na gi-fill para easier testing. -->
         <label for="email">Email</label>
         <input id="email" name="email" type="email" value="admin@usjr.edu.ph" required>
     </div>

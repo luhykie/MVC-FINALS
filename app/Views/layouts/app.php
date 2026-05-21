@@ -4,10 +4,10 @@ use Core\Auth;
 use Core\Session;
 use Core\View\Engine as View;
 
-// Layout data used by every logged-in page.
+// Layout data nga gamiton sa every logged-in page.
 $appConfig = require dirname(__DIR__, 3) . '/config/app.php';
 
-// Flash messages are read once, then removed from the session.
+// Flash messages basahon once, then tangtangon from session.
 $success = Session::flash('success');
 $error = Session::flash('error');
 ?>
@@ -23,17 +23,17 @@ $error = Session::flash('error');
         <nav>
             <!-- <a href="/"><?= View::e($appConfig['name']) ?></a>
             <br> -->
-            <!-- Main navigation links for protected pages. -->
+            <!-- Main navigation links para sa protected pages. -->
             <a href="/dashboard">Dashboard</a>
             <a href="/students">Students</a>
             <a href="/students/history">History</a>
             <?php if (Auth::check()): ?>
-                <!-- Show the logged-in user's name from the session. -->
+                <!-- Ipakita ang logged-in user's name from session. -->
                 <span><?= View::e(Auth::user()['name'] ?? '') ?></span>
             <?php endif; ?>
             <div>
                 <?php if (Auth::check()): ?>
-                    <!-- Logout uses POST plus CSRF protection. -->
+                    <!-- Logout gamit ug POST plus CSRF protection. -->
                     <form method="post" action="/logout">
                         <input type="hidden" name="_csrf" value="<?= View::e(Session::csrfToken()) ?>">
                         <button type="submit">Logout</button>
@@ -44,7 +44,7 @@ $error = Session::flash('error');
     </header>
 
     <main>
-        <!-- One-time success and error messages from controllers. -->
+        <!-- One-time success ug error messages from controllers. -->
         <?php if ($success): ?>
             <div><?= View::e($success) ?></div>
         <?php endif; ?>
@@ -53,7 +53,7 @@ $error = Session::flash('error');
             <div><?= View::e($error) ?></div>
         <?php endif; ?>
 
-        <!-- Page-specific view content is inserted here by the view engine. -->
+        <!-- Diri i-insert sa view engine ang page-specific view content. -->
         <?= $content ?>
 
     </main>

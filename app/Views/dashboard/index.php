@@ -7,7 +7,7 @@ use Core\View\Engine as View;
 
 <!-- <p><a href="/students/create">Add Student</a></p> -->
 
-<!-- Counts come from Student::stats() in the dashboard controller. -->
+<!-- Counts gikan sa Student::stats() sa dashboard controller. -->
 <section>
     <p><?= (int) $stats['total'] ?><br>Total Students</p>
     <p><?= (int) $stats['active'] ?><br>Active Students</p>
@@ -19,7 +19,7 @@ use Core\View\Engine as View;
     <h2>List of Students</h2>
     <p><a href="/students">View All</a></p>
 
-    <!-- Show a friendly message when there are no student records yet. -->
+    <!-- Ipakita ang friendly message kung wala pay student records. -->
     <?php if (!$recentStudents): ?>
         <p>No student records yet.</p>
     <?php else: ?>
@@ -33,7 +33,7 @@ use Core\View\Engine as View;
                 </tr>
             </thead>
             <tbody>
-                <!-- Escape text from the database before showing it in HTML. -->
+                <!-- I-escape ang text from database before ipakita sa HTML. -->
                 <?php foreach ($recentStudents as $student): ?>
                     <tr>
                         <td><?= View::e($student['student_number']) ?></td>
@@ -51,7 +51,7 @@ use Core\View\Engine as View;
     <h2>Deleted History</h2>
     <!-- <p><a href="/students/history">View History</a></p> -->
 
-    <!-- recentDeleted comes from the deleted_students table. -->
+    <!-- recentDeleted gikan sa deleted_students table. -->
     <?php if (!$recentDeleted): ?>
         <p>No deleted student records.</p>
     <?php else: ?>

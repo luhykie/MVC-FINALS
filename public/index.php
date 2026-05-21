@@ -7,22 +7,22 @@ use Core\Container\Container;
 use Core\Http\Router;
 use Core\Session;
 
-// Composer autoload loads all classes from app/, core/, and vendor/.
+// Composer autoload mo-load sa classes gikan sa app/, core/, ug vendor/.
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-// Start the PHP session before auth, flash messages, or CSRF tokens are used.
+// I-start ang PHP session before gamiton ang auth, flash messages, or CSRF tokens.
 Session::start();
 
-// The container creates controller objects and can resolve their dependencies.
+// Ang container mo-create sa controller objects ug mo-resolve sa dependencies.
 $container = new Container();
 
-// The router matches the requested URL to the correct controller method.
+// Ang router mo-match sa URL ngadto sa sakto nga controller method.
 $router = new Router($container);
 
-// Register all web routes into the router.
+// I-register tanan web routes sa router.
 require dirname(__DIR__) . '/routes/web.php';
 
-// Application receives the router and starts handling the current request.
+// Ang application modawat sa router ug mo-handle sa current request.
 $app = new Application($router);
 
 $app->run();

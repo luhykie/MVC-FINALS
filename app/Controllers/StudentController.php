@@ -16,20 +16,20 @@ class StudentController extends Controller
 
     public function __construct()
     {
-        // Controller uses the Student model for all student database actions.
+        // Gamiton ang Student model para sa tanan student database actions.
         $this->students = new Student();
     }
 
     public function index(): string
     {
-        // Only logged-in users can view student records.
+        // Logged-in users ra ang maka-view sa student records.
         $this->requireAuth();
 
-        // Read optional search and page values from the query string.
+        // Kuhaon ang search ug page values gikan sa query string.
         $search = trim((string) ($_GET['search'] ?? ''));
         $page = (int) ($_GET['page'] ?? 1);
 
-        // Ask the model for paginated data, then pass it to the view.
+        // Pangayo sa model ang paginated data, then ipasa sa view.
         return $this->render('students/index', [
             'title' => 'Students',
             'result' => $this->students->paginate($search, $page),
@@ -41,7 +41,7 @@ class StudentController extends Controller
     {
         $this->requireAuth();
 
-        // Show an empty form for creating a new student.
+        // Ipakita ang empty form para mag-add ug new student.
         return $this->render('students/form', [
             'title' => 'Add Student',
             'student' => [],
@@ -55,7 +55,7 @@ class StudentController extends Controller
     {
         $this->requireAuth();
 
-        // Show records that were archived before deletion.
+        // Ipakita ang records nga gi-archive before gi-delete.
         return $this->render('students/history', [
             'title' => 'Deleted Student History',
             'students' => $this->students->deletedHistory(),
@@ -67,11 +67,11 @@ class StudentController extends Controller
         $this->requireAuth();
         $this->validateCsrf();
 
-        // Validate form input before saving it.
+        // I-check una ang form input before i-save.
         $errors = Validator::student($_POST);
 
         if ($errors) {
-            // Send the user back to the form with their input and validation errors.
+            // Ibalik ang user sa form with input ug validation errors.
             return $this->render('students/form', [
                 'title' => 'Add Student',
                 'student' => $_POST,
@@ -82,12 +82,12 @@ class StudentController extends Controller
         }
 
         try {
-            // Create the student, then redirect to its profile page.
+            // I-create ang student, then adto sa profile page.
             $id = $this->students->create($_POST);
             Session::flash('success', 'Student record created.');
             $this->redirect('/students/' . $id);
         } catch (PDOException $exception) {
-            // Duplicate student number or email usually causes a database constraint error.
+            // Duplicate student number or email usually ang cause sa database error.
             return $this->render('students/form', [
                 'title' => 'Add Student',
                 'student' => $_POST,
@@ -102,16 +102,16 @@ class StudentController extends Controller
     {
         $this->requireAuth();
 
-        // Route parameter {id} arrives as a string, so cast it to int for the model.
+        // Ang route parameter {id} kay string, so himuon ug int para sa model.
         $student = $this->students->find((int) $id);
 
         if (!$student) {
-            // Missing student id should show a 404 page.
+            // Kung wala ang student id, ipakita ang 404 page.
             http_response_code(404);
             return $this->render('errors/404', ['title' => 'Student not found']);
         }
 
-        // Show one student's full information.
+        // Ipakita ang full info sa usa ka student.
         return $this->render('students/show', [
             'title' => $student['first_name'] . ' ' . $student['last_name'],
             'student' => $student,
@@ -124,12 +124,12 @@ class StudentController extends Controller
         $student = $this->students->find((int) $id);
 
         if (!$student) {
-            // Cannot edit a record that does not exist.
+            // Dili ma-edit ang record nga wala nag-exist.
             http_response_code(404);
             return $this->render('errors/404', ['title' => 'Student not found']);
         }
 
-        // Reuse the student form, but set it to edit mode.
+        // Gamiton balik ang student form, pero edit mode.
         return $this->render('students/form', [
             'title' => 'Edit Student',
             'student' => $student,
@@ -144,18 +144,18 @@ class StudentController extends Controller
         $this->requireAuth();
         $this->validateCsrf();
 
-        // Load the existing record first so invalid ids can return 404.
+        // I-load una ang existing record para ang invalid id kay mo-return ug 404.
         $student = $this->students->find((int) $id);
         if (!$student) {
             http_response_code(404);
             return $this->render('errors/404', ['title' => 'Student not found']);
         }
 
-        // Validate the submitted changes.
+        // I-check ang gi-submit nga changes.
         $errors = Validator::student($_POST);
 
         if ($errors) {
-            // Merge old data with submitted data so the form keeps what the user typed.
+            // I-merge ang old data ug submitted data para dili mawala ang gi-type sa user.
             return $this->render('students/form', [
                 'title' => 'Edit Student',
                 'student' => array_merge($student, $_POST),
@@ -166,12 +166,12 @@ class StudentController extends Controller
         }
 
         try {
-            // Save changes, then redirect back to the student's profile.
+            // I-save ang changes, then balik sa student profile.
             $this->students->update((int) $id, $_POST);
             Session::flash('success', 'Student record updated.');
             $this->redirect('/students/' . $id);
         } catch (PDOException $exception) {
-            // Handle duplicate student number or email while keeping the edit form open.
+            // I-handle ang duplicate student number or email while open gihapon ang edit form.
             return $this->render('students/form', [
                 'title' => 'Edit Student',
                 'student' => array_merge($student, $_POST),
@@ -187,7 +187,7 @@ class StudentController extends Controller
         $this->requireAuth();
         $this->validateCsrf();
 
-        // The model archives the student to deleted_students before deleting it.
+        // I-archive sa model ang student sa deleted_students before i-delete.
         $this->students->delete((int) $id);
         Session::flash('success', 'Student record moved to deleted history.');
         $this->redirect('/students');

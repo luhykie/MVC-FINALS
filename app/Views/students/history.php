@@ -5,7 +5,7 @@ use Core\View\Engine as View;
 <h1>Deleted Student History</h1>
 <p><a href="/dashboard">Back to Dashboard</a></p>
 
-<!-- These rows come from deleted_students, where deleted records are archived. -->
+<!-- Kini nga rows gikan sa deleted_students, asa gi-archive ang deleted records. -->
 <?php if (!$students): ?>
     <p>No deleted student records.</p>
 <?php else: ?>
@@ -22,7 +22,7 @@ use Core\View\Engine as View;
             </tr>
         </thead>
         <tbody>
-            <!-- Escape database values before printing them. -->
+            <!-- I-escape ang database values before i-print. -->
             <?php foreach ($students as $student): ?>
                 <tr>
                     <td><?= View::e($student['student_number']) ?></td>

@@ -10,37 +10,37 @@ use RuntimeException;
 
 final class Container
 {
-    // Stores custom rules for creating classes or services.
+    // Mo-store sa custom rules para mag-create ug classes or services.
     private array $bindings = [];
 
     public function bind(string $key, callable|string $factory): void
     {
-        // Register how a class/service should be created.
+        // I-register kung giunsa pag-create ang class/service.
         $this->bindings[$key] = $factory;
     }
 
     public function has(string $key): bool
     {
-        // The container can make it if it is bound or if the class exists.
+        // Maka-make ang container kung bound siya or nag-exist ang class.
         return isset($this->bindings[$key]) || class_exists($key);
     }
 
     public function make(string $key): mixed
     {
-        // Use a registered binding first when one exists.
+        // Gamiton una ang registered binding kung naa.
         if (isset($this->bindings[$key])) {
             $factory = $this->bindings[$key];
 
-            // Callable bindings receive the container so they can ask for dependencies.
+            // Callable bindings modawat sa container para makapangayo ug dependencies.
             if (is_callable($factory)) {
                 return $factory($this);
             }
 
-            // String bindings point to a class name that should be built.
+            // String bindings mo-point sa class name nga i-build.
             return $this->build($factory);
         }
 
-        // If there is no binding, try building the class directly.
+        // Kung walay binding, try i-build directly ang class.
         if (class_exists($key)) {
             return $this->build($key);
         }
@@ -50,7 +50,7 @@ final class Container
 
     private function build(string $class): object
     {
-        // Reflection lets the container inspect the class constructor.
+        // Reflection motabang sa container mo-inspect sa class constructor.
         $reflection = new ReflectionClass($class);
 
         if (! $reflection->isInstantiable()) {
@@ -59,7 +59,7 @@ final class Container
 
         $constructor = $reflection->getConstructor();
 
-        // Classes without constructors can be created normally.
+        // Classes nga walay constructors pwede i-create normally.
         if ($constructor === null) {
             return new $class();
         }
@@ -69,13 +69,13 @@ final class Container
         foreach ($constructor->getParameters() as $parameter) {
             $type = $parameter->getType();
 
-            // If the parameter is another class, ask the container to make that class too.
+            // Kung ang parameter kay another class, ipamake pud sa container.
             if ($type instanceof ReflectionNamedType && ! $type->isBuiltin()) {
                 $dependencies[] = $this->make($type->getName());
                 continue;
             }
 
-            // Use default values for optional parameters.
+            // Gamiton ang default values para sa optional parameters.
             if ($parameter->isDefaultValueAvailable()) {
                 $dependencies[] = $parameter->getDefaultValue();
                 continue;
@@ -86,7 +86,7 @@ final class Container
             );
         }
 
-        // Create the class with all resolved constructor dependencies.
+        // I-create ang class with all resolved constructor dependencies.
         return $reflection->newInstanceArgs($dependencies);
     }
 }

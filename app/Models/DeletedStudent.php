@@ -8,24 +8,24 @@ use Core\Database\Model;
 
 class DeletedStudent extends Model
 {
-    // Connects this model to the table that stores archived deleted students.
+    // I-connect ni nga model sa table nga mo-store sa archived deleted students.
     protected string $table = 'deleted_students';
 
     public static function history(): array
     {
-        // Show all deleted students with the newest deletion first.
+        // Ipakita tanan deleted students, newest deletion ang una.
         return self::allOrdered('deleted_at', 'DESC');
     }
 
     public static function recent(int $limit = 5): array
     {
-        // Get a small list of the most recently deleted students.
+        // Kuhaon ang small list sa most recently deleted students.
         return self::latestRecords($limit, 'deleted_at');
     }
 
     public static function archive(array $student): int
     {
-        // Copy the student data into deleted_students before the original row is deleted.
+        // I-copy ang student data sa deleted_students before i-delete ang original row.
         return self::insertRecord([
             'original_student_id' => $student['id'],
             'student_number' => $student['student_number'],

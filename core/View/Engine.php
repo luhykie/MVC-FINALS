@@ -8,27 +8,27 @@ class Engine
 {
     public static function render(string $view, array $data = [], string $layout = 'layouts/app'): string
     {
-        // Convert a view name like "students/index" into its PHP file path.
+        // I-convert ang view name like "students/index" into PHP file path.
         $viewPath = dirname(__DIR__, 2) . '/app/Views/' . $view . '.php';
 
         if (!file_exists($viewPath)) {
             throw new \RuntimeException("View [{$view}] was not found.");
         }
 
-        // Make array keys available as variables in the view, such as $title.
+        // Himuon nga variables sa view ang array keys, like $title.
         extract($data, EXTR_SKIP);
 
-        // Capture the view output into $content instead of printing it immediately.
+        // I-capture ang view output sa $content instead nga i-print dayon.
         ob_start();
         require $viewPath;
         $content = ob_get_clean();
 
-        // Some pages can skip a layout by passing an empty layout string.
+        // Some pages pwede mo-skip sa layout by passing empty layout string.
         if ($layout === '') {
             return $content;
         }
 
-        // Render the layout. The layout can echo $content where the page should appear.
+        // I-render ang layout. Ang layout mo-echo sa $content kung asa dapat mo-appear ang page.
         ob_start();
         require dirname(__DIR__, 2) . '/app/Views/' . $layout . '.php';
 
@@ -37,7 +37,7 @@ class Engine
 
     public static function e(?string $value): string
     {
-        // Escape text before showing it in HTML to prevent XSS.
+        // I-escape ang text before ipakita sa HTML para prevent XSS.
         return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
     }
 }

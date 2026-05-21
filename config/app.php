@@ -1,12 +1,12 @@
 <?php
 
 return [
-    // Main app title used by layouts/pages.
+    // Main app title nga gamiton sa layouts/pages.
     'name' => 'Student Records MVC',
 
-    // Keep empty when the project runs from the web server root.
+    // I-empty lang kung ang project nag-run from web server root.
     'base_url' => '',
 
-    // Used by the app to decide whether development errors should be visible.
+    // Gamiton sa app para ma-decide kung ipakita ang development errors.
     'debug' => true,
 ];
